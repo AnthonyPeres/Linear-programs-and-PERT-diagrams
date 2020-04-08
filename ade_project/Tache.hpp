@@ -14,7 +14,6 @@
 #include <string>
 #include <fstream>
 #include <list>
-#include "Etape.hpp"
 
 class Tache {
 
@@ -36,8 +35,10 @@ public:
     int get_marge_totale();
     bool get_niveau_place();
     bool get_critique();
-    Etape get_etape_debut();
-    Etape get_etape_fin();
+    int get_date_debut_plus_tot();
+    int get_date_debut_plus_tard();
+    int get_date_fin_plus_tot();
+    int get_date_fin_plus_tard();
     std::list<Tache*> get_antecedants();
     std::list<Tache*> get_successeurs();
     
@@ -48,8 +49,10 @@ public:
     void set_marge_totale(int marge_totale);
     void set_niveau_place(bool niveau_place);
     void set_critique(bool critique);
-    void set_etape_debut(Etape etape_debut);
-    void set_etape_fin(Etape etape_fin);
+    void set_date_debut_plus_tot(int date);
+    void set_date_debut_plus_tard(int date);
+    void set_date_fin_plus_tot(int date);
+    void set_date_fin_plus_tard(int date);
     void set_antecedants(std::list<Tache*> antecedants);
     void set_successeurs(std::list<Tache*> successeurs);
 
@@ -62,8 +65,10 @@ private:
     int _marge_totale;
     bool _niveau_place;
     bool _critique;
-    Etape _etape_debut;
-    Etape _etape_fin;
+    int _date_debut_plus_tot;
+    int _date_debut_plus_tard;
+    int _date_fin_plus_tot;
+    int _date_fin_plus_tard;
     std::list<Tache*> _antecedants;
     std::list<Tache*> _successeurs;
     

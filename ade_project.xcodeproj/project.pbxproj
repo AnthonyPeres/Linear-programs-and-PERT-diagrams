@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9231265D243DF80B0009FF2B /* Etape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9231265C243DF80B0009FF2B /* Etape.cpp */; };
 		9231265F243DF80F0009FF2B /* GestionnaireDonnee.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9231265E243DF80F0009FF2B /* GestionnaireDonnee.cpp */; };
 		92312663243DF8410009FF2B /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92312662243DF8410009FF2B /* main.cpp */; };
 		92312665243DF84B0009FF2B /* ProgrammeLineaire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92312664243DF84B0009FF2B /* ProgrammeLineaire.cpp */; };
 		92312667243DF8500009FF2B /* Reseau.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92312666243DF8500009FF2B /* Reseau.cpp */; };
 		92312669243DF8550009FF2B /* Tache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 92312668243DF8550009FF2B /* Tache.cpp */; };
+		92312670243E270A0009FF2B /* Etape.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9231266E243E270A0009FF2B /* Etape.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -33,7 +33,6 @@
 		92312659243DF7FB0009FF2B /* GestionnaireDonnee.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GestionnaireDonnee.hpp; sourceTree = "<group>"; };
 		9231265A243DF8050009FF2B /* Reseau.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Reseau.hpp; sourceTree = "<group>"; };
 		9231265B243DF8050009FF2B /* Tache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tache.hpp; sourceTree = "<group>"; };
-		9231265C243DF80B0009FF2B /* Etape.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Etape.cpp; sourceTree = "<group>"; };
 		9231265E243DF80F0009FF2B /* GestionnaireDonnee.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GestionnaireDonnee.cpp; sourceTree = "<group>"; };
 		92312662243DF8410009FF2B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		92312664243DF84B0009FF2B /* ProgrammeLineaire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProgrammeLineaire.cpp; sourceTree = "<group>"; };
@@ -42,7 +41,8 @@
 		9231266A243DF85D0009FF2B /* ListeTaches.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = ListeTaches.csv; sourceTree = "<group>"; };
 		9231266B243DF8630009FF2B /* Resultats.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Resultats.csv; sourceTree = "<group>"; };
 		9231266C243DF8630009FF2B /* Les programmes linéaires.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = "Les programmes linéaires.csv"; sourceTree = "<group>"; };
-		9231266D243DF8670009FF2B /* Etape.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Etape.hpp; sourceTree = "<group>"; };
+		9231266E243E270A0009FF2B /* Etape.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Etape.cpp; sourceTree = "<group>"; };
+		9231266F243E270A0009FF2B /* Etape.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Etape.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +106,8 @@
 			isa = PBXGroup;
 			children = (
 				92312666243DF8500009FF2B /* Reseau.cpp */,
-				9231265C243DF80B0009FF2B /* Etape.cpp */,
 				92312668243DF8550009FF2B /* Tache.cpp */,
+				9231266E243E270A0009FF2B /* Etape.cpp */,
 			);
 			name = "Source Files";
 			sourceTree = "<group>";
@@ -124,8 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				9231265A243DF8050009FF2B /* Reseau.hpp */,
-				9231266D243DF8670009FF2B /* Etape.hpp */,
 				9231265B243DF8050009FF2B /* Tache.hpp */,
+				9231266F243E270A0009FF2B /* Etape.hpp */,
 			);
 			name = "Header Files";
 			sourceTree = "<group>";
@@ -217,8 +217,8 @@
 				9231265F243DF80F0009FF2B /* GestionnaireDonnee.cpp in Sources */,
 				92312665243DF84B0009FF2B /* ProgrammeLineaire.cpp in Sources */,
 				92312667243DF8500009FF2B /* Reseau.cpp in Sources */,
+				92312670243E270A0009FF2B /* Etape.cpp in Sources */,
 				92312669243DF8550009FF2B /* Tache.cpp in Sources */,
-				9231265D243DF80B0009FF2B /* Etape.cpp in Sources */,
 				92312663243DF8410009FF2B /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

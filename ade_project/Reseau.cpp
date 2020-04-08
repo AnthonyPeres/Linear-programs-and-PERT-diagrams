@@ -13,10 +13,8 @@ using namespace std;
 
 Reseau::Reseau() {
     init_liste_taches();
-    ajouter_successeurs();
     approche_par_suppression();
-    afficher_liste_taches();
-    construction_graphe_initial();
+    ordonnancement_au_plus_tot();
 }
 
 Reseau::~Reseau() {
@@ -27,9 +25,9 @@ Reseau::~Reseau() {
 
 void Reseau::init_liste_taches() {
     
-    // On recupere le tableau des taches dans le fichier ListeTaches.csv
     ifstream fichier("ade_project/ListeTaches.csv");
     if(fichier) {
+        
         string ligne;
         
         while(getline(fichier, ligne)) {
@@ -40,17 +38,14 @@ void Reseau::init_liste_taches() {
             
             for (int i = 0; i < (int) ligne.size() ; ++i) {
                 if(i == 0) {
-                    // Premiere colonne : Le nom
                     nom = ligne[i];
                     
                 } else if(i == 2) {
-                    // Deuxieme colonne : La durée
                     char stTemp[2];
                     sprintf(stTemp,"%c", ligne[i]);
                     duree = atoi(stTemp);
                     
                 } else if(i >= 4) {
-                    // Ensuite : Les antecedants
                     for (auto &tache : _liste_taches) {
                         if(ligne[i] == tache->get_nom()) {
                             antecedants.push_back(tache);
@@ -71,128 +66,91 @@ void Reseau::init_liste_taches() {
     }
 }
 
-
-
-
 void Reseau::approche_par_suppression() {
-//    int niveau = 0;
-//    bool placement_effectue = false;
-//
-//    while (!placement_effectue) {
-//        for (auto& tache : _liste_taches) {
-//            if (!tache.get_niveau_place()) {
-//
-//                /* Dans le cas ou la tâche n'a pas d'antecedants */
-//                if (tache.get_antecedants().size() == 0) {
-//                    tache.set_niveau(niveau + 1);
-//                    tache.set_niveau_place(true);
-//
-//
-//                }
-//
-//                /* Dans le cas ou elle a des antecedants */
-//                else {
-//                    bool a_placer = true;
-//                    for (auto&& antecedant : tache.get_antecedants()) {
-//                        for (auto&& t : _liste_taches) {
-//
-//                            if(t.get_nom() == antecedant.get_nom()) {
-//                                if(!t.get_niveau_place()) {
-//                                    a_placer = false;
-//                                }
-//                                niveau = t.get_niveau();
-//                            }
-//                        }
-//                    }
-//
-//                    if(a_placer == true) {
-//                        tache.set_niveau(niveau + 1);
-//                        tache.set_niveau_place(true);
-//                    }
-//                }
-//
-//                this->niveau_max = niveau + 1;
-//            }
-//        }
-//
-//        // Pour savoir si on sort de la boucle
-//        placement_effectue = true;
-//        for (auto& t : _liste_taches) {
-//            if(t.get_niveau_place() == false) {
-//                placement_effectue = false;
-//            }
-//        }
-//    }
-}
+    int niveau = 0;
+    bool placement_effectue = false;
 
+    while (!placement_effectue) {
+        
+        for (auto& tache : _liste_taches) {
+            if (!tache->get_niveau_place()) {
+                
+                if (tache->get_antecedants().size() == 0) {
+                    
+                    tache->set_niveau(niveau + 1);
+                    tache->set_niveau_place(true);
+                } else {
+                    
+                    bool a_placer = true;
+                    for (auto& antecedant : tache->get_antecedants()) {
+                        if(!antecedant->get_niveau_place()) {
+                            a_placer = false;
+                        } else {
+                            niveau = antecedant->get_niveau();
+                        }
+                    }
 
-void Reseau::afficher_liste_taches() {
-//    for (auto& tache : _liste_taches) {
-//        cout << tache.get_nom() << " a une durée de : " << tache.get_duree();
-//        cout << "   son niveau : " << tache.get_niveau();
-//        cout << "   ces antecedants : ";
-//        for (auto& a : tache.get_antecedants()) {
-//            cout << a.get_nom() << "   ";
-//        }
-//        cout << "\n";
-//
-//    }
-}
+                    if(a_placer == true) {
+                        tache->set_niveau(niveau + 1);
+                        tache->set_niveau_place(true);
+                    }
+                }
+            }
+        }
 
-void Reseau::ajouter_successeurs() {
-//    for(auto& tache : _liste_taches) {
-//        for(auto& antecedant : tache.get_antecedants()) {
-//            for(auto& t : _liste_taches) {
-//                if(antecedant.get_nom() == t.get_nom()) {
-//                    t.ajouter_successeur(tache);
-//                }
-//            }
-//        }
-//    }
+        // Pour savoir si on sort de la boucle
+        placement_effectue = true;
+        for (auto& t : _liste_taches) {
+            if(t->get_niveau_place() == false) {
+                placement_effectue = false;
+            }
+        }
+    }
 }
 
 
 
-
-void Reseau::construction_graphe_initial() {
+// Permet le calcul des plus loongs chemins (en utilisant la programmation dynamique)
+void Reseau::ordonnancement_au_plus_tot() {
     
+    // On met toutes les dates au plus tot à -1
+    for(auto& tache : _liste_taches) {
+        tache->set_date_debut_plus_tot(-1);
+        tache->set_date_fin_plus_tard(-1);
+    }
     
+    // La premiere tache a une date au plus tot de 0
+    _liste_taches.front()->set_date_debut_plus_tot(0);
+    _liste_taches.front()->set_date_fin_plus_tot(0 + _liste_taches.front()->get_duree());
     
-//    
-//    // Pour chaque niveaux
-//    for(int i(1); i <= niveau_max; ++i) {
-//        
-//        for(auto& tache : _liste_taches) {
-//            if(tache.get_niveau() == i) {
-//             
-//                
-//            }
-//        }
-//    }
-}
-
-void Reseau::marges_totales() {
+    for (auto& tache : _liste_taches) {
+        
+        int date_plus_tot = 0;
+            
+        for (auto& predecesseur : tache->get_antecedants()) {
+        
+            if (tache->get_date_debut_plus_tot() == -1 && predecesseur->get_date_debut_plus_tot() > -1) {
+                if ((predecesseur->get_date_debut_plus_tot() + predecesseur->get_duree()) > date_plus_tot) {
+                    date_plus_tot = predecesseur->get_date_debut_plus_tot() + predecesseur->get_duree();
+                }
+            }
+        }
+            
+        tache->set_date_debut_plus_tot(date_plus_tot);
+        tache->set_date_fin_plus_tot((int) (tache->get_date_debut_plus_tot() + tache->get_duree()));
+    
+    }
     
 }
 
-void Reseau::taches_critiques() {
+void Reseau::ordonnancement_au_plus_tard() {
+    
+    // On met toutes les dates au plus tard au max
+    for (auto& tache : _liste_taches) {
+        tache->set_date_debut_plus_tard(INT_MAX);
+    }
+    
+    // La derniere tâche :
+    
     
 }
-
-void Reseau::chemins_critiques() {
-    
-}
-
-void Reseau::sous_graphe_critique() {
-    
-}
-
-void Reseau::marges_libres() {
-    
-}
-
-
-
-
-
-

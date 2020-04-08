@@ -14,7 +14,6 @@
 #include <string>
 #include <fstream>
 #include <list>
-#include "Etape.hpp"
 #include "Tache.hpp"
 
 class Reseau {
@@ -29,20 +28,13 @@ private:
     
     // Fonctions
     void init_liste_taches();
-    void ajouter_successeurs();
-    void afficher_liste_taches();
     void approche_par_suppression();
     void construction_graphe_initial();
-    void marges_totales();
-    void taches_critiques();
-    void chemins_critiques();
-    void sous_graphe_critique();
-    void marges_libres();
+    void ordonnancement_au_plus_tot();
+    void ordonnancement_au_plus_tard();
         
     // Les variables
     std::list<Tache*> _liste_taches;
-    std::list<Etape*> _liste_etapes;
-    std::vector<Tache*> _chemin_critique();
 
 };
 

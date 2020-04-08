@@ -71,13 +71,24 @@ bool Tache::get_critique() {
     return this->_critique;
 }
 
-Etape Tache::get_etape_debut() {
-    return this->_etape_debut;
+
+int Tache::get_date_debut_plus_tot() {
+    return this->_date_debut_plus_tot;
 }
 
-Etape Tache::get_etape_fin() {
-    return this->_etape_fin;
+int Tache::get_date_debut_plus_tard() {
+    return this->_date_debut_plus_tard;
 }
+
+int Tache::get_date_fin_plus_tot() {
+    return this->_date_fin_plus_tot;
+}
+
+int Tache::get_date_fin_plus_tard() {
+    return this->_date_fin_plus_tard;
+}
+
+
 
 std::list<Tache*> Tache::get_antecedants() {
     return this->_antecedants;
@@ -113,13 +124,22 @@ void Tache::set_critique(bool critique) {
     this->_critique = critique;
 }
 
-void Tache::set_etape_debut(Etape etape_debut) {
-    this->_etape_debut = etape_debut;
+void Tache::set_date_debut_plus_tot(int date) {
+    this->_date_debut_plus_tot = date;
 }
 
-void Tache::set_etape_fin(Etape etape_fin) {
-    this->_etape_fin = etape_fin;
+void Tache::set_date_debut_plus_tard(int date) {
+    this->_date_debut_plus_tard = date;
 }
+
+void Tache::set_date_fin_plus_tot(int date) {
+    this->_date_fin_plus_tot = date;
+}
+
+void Tache::set_date_fin_plus_tard(int date) {
+    this->_date_fin_plus_tard = date;
+}
+
 
 void Tache::set_antecedants(std::list<Tache*> antecedants) {
     this->_antecedants = antecedants;
