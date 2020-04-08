@@ -15,6 +15,7 @@
 #include <fstream>
 #include <list>
 #include "Tache.hpp"
+#include "Etape.hpp"
 
 class Reseau {
 
@@ -35,6 +36,7 @@ private:
         
     // Les variables
     std::list<Tache*> _liste_taches;
+    std::list<Etape*> _liste_etapes;
 
 };
 

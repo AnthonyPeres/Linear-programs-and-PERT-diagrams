@@ -13,22 +13,16 @@ using namespace std;
 // Constructeurs et destructeurs
 
 Tache::Tache() {
-    this->_niveau_place = false;
-    this->_niveau = '\0';
-    this->_marge_totale = '\0';
+    
 }
 
 Tache::Tache(char nom, int duree, std::list<Tache *> antecedants) {
-    this->_niveau_place = false;
-    this->_niveau = '\0';
-    this->_marge_totale = '\0';
     this->_nom = nom;
     this->_duree = duree;
     this->_antecedants = antecedants;
-    
-    for(std::list<Tache*>::iterator it = this->_antecedants.begin(); it!=this->_antecedants.end(); ++it) {
-        (*it)->ajouter_successeur(this);
-    }
+    this->actualiser_successeurs();
+    this->_etape_debut = NULL;
+    this->_etape_fin = NULL;
 }
 
 Tache::~Tache() {
@@ -43,6 +37,12 @@ void Tache::ajouter_antecedant(Tache *antecedant) {
 
 void Tache::ajouter_successeur(Tache *successeur) {
     this->_successeurs.push_back(successeur);
+}
+
+void Tache::actualiser_successeurs() {
+    for(std::list<Tache*>::iterator it = this->_antecedants.begin(); it!=this->_antecedants.end(); ++it) {
+        (*it)->ajouter_successeur(this);
+    }
 }
 
 // Accesseurs
@@ -63,32 +63,9 @@ int Tache::get_marge_totale() {
     return this->_marge_totale;
 }
 
-bool Tache::get_niveau_place() {
-    return this->_niveau_place;
-}
-
 bool Tache::get_critique() {
     return this->_critique;
 }
-
-
-int Tache::get_date_debut_plus_tot() {
-    return this->_date_debut_plus_tot;
-}
-
-int Tache::get_date_debut_plus_tard() {
-    return this->_date_debut_plus_tard;
-}
-
-int Tache::get_date_fin_plus_tot() {
-    return this->_date_fin_plus_tot;
-}
-
-int Tache::get_date_fin_plus_tard() {
-    return this->_date_fin_plus_tard;
-}
-
-
 
 std::list<Tache*> Tache::get_antecedants() {
     return this->_antecedants;
@@ -96,6 +73,14 @@ std::list<Tache*> Tache::get_antecedants() {
 
 std::list<Tache*> Tache::get_successeurs() {
     return this->_successeurs;
+}
+
+Etape* Tache::get_etape_debut() {
+    return this->_etape_debut;
+}
+
+Etape* Tache::get_etape_fin() {
+    return this->_etape_fin;
 }
 
 // Mutateurs
@@ -116,28 +101,8 @@ void Tache::set_marge_totale(int marge_totale) {
     this->_marge_totale = marge_totale;
 }
 
-void Tache::set_niveau_place(bool niveau_place) {
-    this->_niveau_place = niveau_place;
-}
-
 void Tache::set_critique(bool critique) {
     this->_critique = critique;
-}
-
-void Tache::set_date_debut_plus_tot(int date) {
-    this->_date_debut_plus_tot = date;
-}
-
-void Tache::set_date_debut_plus_tard(int date) {
-    this->_date_debut_plus_tard = date;
-}
-
-void Tache::set_date_fin_plus_tot(int date) {
-    this->_date_fin_plus_tot = date;
-}
-
-void Tache::set_date_fin_plus_tard(int date) {
-    this->_date_fin_plus_tard = date;
 }
 
 
@@ -148,3 +113,51 @@ void Tache::set_antecedants(std::list<Tache*> antecedants) {
 void Tache::set_successeurs(std::list<Tache*> successeurs) {
     this->_successeurs = successeurs;
 }
+
+void Tache::set_etape_debut(Etape* etape) {
+    this->_etape_debut = etape;
+}
+
+void Tache::set_etape_fin(Etape* etape) {
+    this->_etape_fin = etape;
+}
+
+int Tache::get_date_debut_plus_tot() {
+    return this->get_etape_debut()->get_date_plus_tot();
+}
+
+int Tache::get_date_debut_plus_tard() {
+    return this->get_etape_debut()->get_date_plus_tard();
+}
+
+int Tache::get_date_fin_plus_tot() {
+    return this->get_etape_fin()->get_date_plus_tot();
+}
+
+int Tache::get_date_fin_plus_tard() {
+    return this->get_etape_fin()->get_date_plus_tard();
+}
+
+void Tache::set_date_debut_plus_tot(int date) {
+    this->get_etape_debut()->set_date_plus_tot(date);
+}
+
+void Tache::set_date_debut_plus_tard(int date) {
+    this->get_etape_debut()->set_date_plus_tard(date);
+}
+
+void Tache::set_date_fin_plus_tot(int date) {
+    this->get_etape_fin()->set_date_plus_tot(date);
+}
+
+void Tache::set_date_fin_plus_tard(int date) {
+    this->get_etape_fin()->set_date_plus_tard(date);
+}
+
+
+
+
+
+
+
+
