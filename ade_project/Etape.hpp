@@ -15,23 +15,24 @@ class Etape {
     
 public:
     
-    // Constructeur et destructeur
+    /* Constructeur et destructeur */
     Etape();
     Etape(int numero);
     ~Etape();
     
-    // Accesseurs
-    int get_numero();
-    int get_date_plus_tot();
-    int get_date_plus_tard();
+    /* Accesseurs */
+    int getNumero();
+    int getDatePlusTot();
+    int getDatePlusTard();
     
-    // Mutateurs
-    void set_numero(int numero);
-    void set_date_plus_tot(int date);
-    void set_date_plus_tard(int date);
+    /* Mutateurs */
+    void setNumero(int numero);
+    void setDatePlusTot(int date);
+    void setDatePlusTard(int date);
     
 private:
     
+    /* Variables */
     int _numero;
     int _date_plus_tot;
     int _date_plus_tard;

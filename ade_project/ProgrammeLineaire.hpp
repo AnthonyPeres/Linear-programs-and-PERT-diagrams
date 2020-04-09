@@ -19,39 +19,39 @@ class ProgrammeLineaire {
     
 public:
 
-//  Constructeur et destructeur
+    /*  Constructeur et destructeur */
     ProgrammeLineaire();
     ~ProgrammeLineaire();
     
-//  Fonctions
+    /* Fonctions */
     void init();
     void simplexe();
     
-//  Les accesseurs
-    float get_temps_resolution();
-    int get_nb_variables_decisions();
-    int get_nb_contraintes();
-    int get_indice_colonne_pivot();
-    int get_indice_ligne_pivot();
-    int get_valeur_pivot();
-    std::vector<int> get_profit();
-    std::vector<std::vector<int>> get_matrice();
-    std::vector<int> get_composantes_base();
+    /* Les accesseurs */
+    float getTempsResolution();
+    int getNombreVarDecisions();
+    int getNombreContraintes();
+    int getIndiceColonnePivot();
+    int getIndiceLignePivot();
+    int getValeurPivot();
+    std::vector<int> getProfit();
+    std::vector<std::vector<int>> getMatrice();
+    std::vector<int> getComposanteBase();
     
-//  Les mutateurs
-    void set_temps_resolution(float t);
-    void set_nb_variable_decisions(int n);
-    void set_nb_contraintes(int c);
-    void set_indice_colonne_pivot(int indice_colonne_pivot);
-    void set_indice_ligne_pivot(int indice_ligne_pivot);
-    void set_valeur_pivot(int valeur_pivot);
-    void set_profit(std::vector<int> z);
-    void set_matrice(std::vector<std::vector<int>> a);
-    void set_composantes_base(std::vector<int> b);
+    /* Les mutateurs */
+    void setTempsResolution(float t);
+    void setNombreVarDecisions(int n);
+    void setNombreContraintes(int c);
+    void setIndiceColonnePivot(int indice_colonne_pivot);
+    void setIndiceLignePivot(int indice_ligne_pivot);
+    void setValeurProfit(int valeur_pivot);
+    void setProfit(std::vector<int> z);
+    void setMatrice(std::vector<std::vector<int>> a);
+    void setComposanteBase(std::vector<int> b);
     
 private:
 
-//  Les variables
+    /* Variables */
     float _temps_resolution;
     int _nb_variables_decisions;
     int _nb_contraintes;
@@ -62,19 +62,19 @@ private:
     std::vector<std::vector<int>> _matrice;
     std::vector<int> _composantes_base;
     
-//  Fonctions de resolution
-    void modifier_matrice();
-    bool solution_optimale();
-    void trouver_colonne_pivot();
-    void trouver_pivot();
-    void resoudre_pivot();
+    /* Fonctions de resolution */
+    void modifierMatrice();
+    bool solutionOptimale();
+    void trouverColonnePivot();
+    void trouverPivot();
+    void resoudrePivot();
     
-//  Les fonctions d'attribution de valeurs random
-    int random_variables_decisions();
-    int random_contraintes();
-    int random_profit();
-    int random_matrice();
-    int random_base();
+    /* Les fonctions d'attribution de valeurs random */
+    int randomVariablesDecisions();
+    int randomContraintes();
+    int randomProfit();
+    int randomMatrice();
+    int randomBase();
     
 };
 

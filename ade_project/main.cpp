@@ -12,6 +12,8 @@
 #include "GestionnaireDonnee.hpp"
 #include "Reseau.hpp"
 
+using namespace std;
+
 /* Les fonctions */
 
 void resolution_programmes_lineaires();
@@ -21,12 +23,12 @@ int main(int argc, const char * argv[]) {
     int choix = 0;
     
     while (choix != 3) {
-        std::cout << "Que souhaitez-vous ?\n";
-        std::cout << "  1 - Résolution de Programme Linéaires.\n";
-        std::cout << "  2 - Appliquer la méthode PERT.\n";
-        std::cout << "  3 - Quitter le programme.\n";
-        std::cout << "Choix : ";
-        std::cin >> choix;
+        cout << "Que souhaitez-vous ?\n";
+        cout << "  1 - Résolution de Programme Linéaires.\n";
+        cout << "  2 - Appliquer la méthode PERT.\n";
+        cout << "  3 - Quitter le programme.\n";
+        cout << "Choix : ";
+        cin >> choix;
         
         switch (choix) {
             case 1:
@@ -42,29 +44,30 @@ int main(int argc, const char * argv[]) {
     return 0;
 }
 
-/* Les fonctions */
+/* Fonctions */
 
-// La résolution de programmes linéaires
-
+/* La résolution de programmes linéaires */
 void resolution_programmes_lineaires() {
     
-    std::cout << "Lancement de la résolution de programmes linéaires\n";
+    cout << "Lancement de la résolution de programmes linéaires\n";
     
     // Création des PLC
-    std::vector<ProgrammeLineaire> plc(rand()%(200-50)+50);
+    vector<ProgrammeLineaire> plc(rand()%(200-50)+50);
     
     // On écrit les PLC et les résultats dans deux fichiers.csv différents
     GestionnaireDonnee gestionnaireDonnee;
     gestionnaireDonnee.ecrirePLC(plc);
     gestionnaireDonnee.ecrireResultats(plc);
     
-    std::cout << "Fin de la résolution de programmes linéaires\n";
+    cout << "Fin de la résolution de programmes linéaires\n";
 }
 
-// La méthode PERT
-
+/* La méthode PERT */
 void methode_pert() {
-    std::cout << "Lancement de la méthode PERT\n";
+    
+    cout << "Lancement de la méthode PERT\n" << endl;
+    
     Reseau reseau;
-    std::cout << "Fin de la méthode PERT\n";
+    
+    cout << endl << "Fin de la méthode PERT\n" << endl;
 }

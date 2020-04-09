@@ -10,13 +10,23 @@
 
 using namespace std;
 
-// Constructeur et destructeur
+/* Constructeur et destructeur */
 
-GestionnaireDonnee::GestionnaireDonnee() {}
-GestionnaireDonnee::~GestionnaireDonnee() {}
+/* Constructeur par défaut du gestionnaire de données. **/
+GestionnaireDonnee::GestionnaireDonnee() {
+    
+}
 
-// Les fonctions
+/* Destructeur du gestionnaire de données. **/
+GestionnaireDonnee::~GestionnaireDonnee() {
+    
+}
 
+/* Fonctions */
+
+/* Fonction permettant d'écrire les PLC dans le fichier CSV.
+ * @param liste_plc : la liste des plc a écrire.
+ **/
 void GestionnaireDonnee::ecrirePLC(vector<ProgrammeLineaire> liste_plc) {
     
     ofstream fichier;
@@ -27,12 +37,12 @@ void GestionnaireDonnee::ecrirePLC(vector<ProgrammeLineaire> liste_plc) {
     int i = 1;
     for (auto& plc : liste_plc) {
         fichier << ";PLC n°" + to_string(i) + "\n";
-        fichier << "Nombre de variables de décisions : ;" + to_string(plc.get_nb_variables_decisions()) + "\n";
-        fichier << "Nombre de contraintes : ;" + to_string(plc.get_nb_contraintes()) + "\n";
+        fichier << "Nombre de variables de décisions : ;" + to_string(plc.getNombreVarDecisions()) + "\n";
+        fichier << "Nombre de contraintes : ;" + to_string(plc.getNombreContraintes()) + "\n";
         fichier << "Matrice :\n";
         
-        int indice_case = 0, indice_ligne = 0, indice_derniere_ligne = (int) plc.get_matrice().size() - 1;
-        for(auto& ligne : plc.get_matrice()) {
+        int indice_case = 0, indice_ligne = 0, indice_derniere_ligne = (int) plc.getMatrice().size() - 1;
+        for(auto& ligne : plc.getMatrice()) {
             
             if(indice_ligne == indice_derniere_ligne) {
                 fichier << "Z : ";
@@ -56,6 +66,9 @@ void GestionnaireDonnee::ecrirePLC(vector<ProgrammeLineaire> liste_plc) {
     fichier.close();
 }
 
+/* Fonction permettant d'écrire le temps d'execution dans le fichier CSV.
+ * @param liste_plc : la liste des plcs
+ **/
 void GestionnaireDonnee::ecrireResultats(vector<ProgrammeLineaire> liste_plc) {
     
     ofstream fichier;
@@ -68,9 +81,9 @@ void GestionnaireDonnee::ecrireResultats(vector<ProgrammeLineaire> liste_plc) {
     fichier << "\n";
     
     for(auto& plc : liste_plc) {
-        fichier << to_string(plc.get_nb_variables_decisions()) + ";";
-        fichier << to_string(plc.get_nb_contraintes()) + ";";
-        fichier << to_string(plc.get_temps_resolution());
+        fichier << to_string(plc.getNombreVarDecisions()) + ";";
+        fichier << to_string(plc.getNombreContraintes()) + ";";
+        fichier << to_string(plc.getTempsResolution());
         fichier << "\n";
     }
     

@@ -10,23 +10,27 @@
 
 using namespace std;
 
+/* Constructeur et destructeur */
 
 Reseau::Reseau() {
-    init_liste_taches();
-    approche_par_suppression();
-    construction_graphe_initial();
-    ordonnancement_au_plus_tot();
-    ordonnancement_au_plus_tard();
-    calculs_marges_totales();
+    initListeTaches();
+    approcheParSuppresion();
+    constructionGrapheInitial();
+    ordonnancementPlusTot();
+    ordonnancementPlusTard();
+    executerCalculs();
+    afficherResultats();
+    verifierDonnees();
 }
 
 Reseau::~Reseau() {
     
 }
 
-// Les fonctions
+/* Fonctions */
 
-void Reseau::init_liste_taches() {
+/* Fonction qui recupere la liste des tâches dans le fichier csv. **/
+void Reseau::initListeTaches() {
     
     ifstream fichier("ade_project/ListeTaches.csv");
     if(fichier) {
@@ -37,7 +41,7 @@ void Reseau::init_liste_taches() {
 
             char nom = '\0';
             int duree = '\0';
-            list<Tache*> antecedants;
+            list<Tache*> predecesseurs;
             
             for (int i = 0; i < (int) ligne.size() ; ++i) {
                 if(i == 0) {
@@ -50,15 +54,15 @@ void Reseau::init_liste_taches() {
                     
                 } else if(i >= 4) {
                     for (auto &tache : _liste_taches) {
-                        if(ligne[i] == tache->get_nom()) {
-                            antecedants.push_back(tache);
+                        if(ligne[i] == tache->getNom()) {
+                            predecesseurs.push_back(tache);
                         }
                     }
                 }
             }
             
             // On creer et on ajoute la tache a la liste
-            Tache *t = new Tache(nom, duree, antecedants);
+            Tache *t = new Tache(nom, duree, predecesseurs);
             this->_liste_taches.push_back(t);
         }
         
@@ -69,37 +73,35 @@ void Reseau::init_liste_taches() {
     }
 }
 
-
-/* AU LIEU DE FAIRE PLACEMENT_EFFECTUE FAIRE NBC COMME DANS ORDONNANCEMENT**/
-
-void Reseau::approche_par_suppression() {
+/* Fonction donnant des niveaux aux tâches grace à l'approche par suppression. **/
+void Reseau::approcheParSuppresion() {
     int niveau = 0;
     bool placement_effectue = false;
 
     for(auto& tache : _liste_taches) {
-        tache->set_niveau(-1);
+        tache->setNiveau(-1);
     }
     
     while (!placement_effectue) {
         
         for (auto& tache : _liste_taches) {
-            if (tache->get_niveau() == -1) {
+            if (tache->getNiveau() == -1) {
                 
-                if (tache->get_antecedants().size() == 0) {
-                    tache->set_niveau(niveau + 1);
+                if (tache->getPredecesseurs().size() == 0) {
+                    tache->setNiveau(niveau + 1);
                 } else {
                     
                     bool a_placer = true;
-                    for (auto& antecedant : tache->get_antecedants()) {
-                        if(antecedant->get_niveau() == -1) {
+                    for (auto& antecedant : tache->getPredecesseurs()) {
+                        if(antecedant->getNiveau() == -1) {
                             a_placer = false;
                         } else {
-                            niveau = antecedant->get_niveau();
+                            niveau = antecedant->getNiveau();
                         }
                     }
 
                     if(a_placer == true) {
-                        tache->set_niveau(niveau + 1);
+                        tache->setNiveau(niveau + 1);
                     }
                 }
             }
@@ -108,16 +110,17 @@ void Reseau::approche_par_suppression() {
         // Pour savoir si on sort de la boucle
         placement_effectue = true;
         for (auto& t : _liste_taches) {
-            if(t->get_niveau() == -1) {
+            if(t->getNiveau() == -1) {
                 placement_effectue = false;
             }
         }
     }
 }
 
-void Reseau::construction_graphe_initial() {
+/* Fonction qui construit le graphe initial. **/
+void Reseau::constructionGrapheInitial() {
     
-    int n = _liste_taches.back()->get_niveau();
+    int n = _liste_taches.back()->getNiveau();
     int numero_etape = 0;
             
     /* On creer la premiere tâche et on y accroche toutes les tâches du niveau 1 */
@@ -127,32 +130,28 @@ void Reseau::construction_graphe_initial() {
     numero_etape++;
     
     for (auto& tache : _liste_taches) {
-        if (tache->get_niveau() == 1) {
-            
-            tache->set_etape_debut(premiere_etape);
-        
+        if (tache->getNiveau() == 1) {
+            tache->setEtapeDebut(premiere_etape);
         }
     }
-    
-    /* On parcourt chaque tâche, niveau par niveau */
-    
+        
     for (int i = 1; i <= n; ++i) {
         for (auto& tache : _liste_taches) {
-            if (tache->get_niveau() == i) {
+            if (tache->getNiveau() == i) {
                 
-                if(tache->get_successeurs().size() != 0) {
+                if(tache->getSuccesseurs().size() != 0) {
             
-                    for (auto& successeur : tache->get_successeurs()) {
-                        if (successeur->get_antecedants().size() > 1) {
+                    for (auto& successeur : tache->getSuccesseurs()) {
+                        if (successeur->getPredecesseurs().size() > 1) {
    
                             bool deja_tache_fin = false;
                             
-                            for (auto& t : successeur->get_antecedants()) {
+                            for (auto& t : successeur->getPredecesseurs()) {
                                 
-                                if (t->get_etape_fin() != NULL) {
-                                    tache->set_etape_fin(t->get_etape_fin());
+                                if (t->getEtapeFin() != NULL) {
+                                    tache->setEtapeFin(t->getEtapeFin());
                                     deja_tache_fin = true;
-                                    successeur->set_etape_debut(tache->get_etape_fin());
+                                    successeur->setEtapeDebut(tache->getEtapeFin());
                                 }
                             }
                             
@@ -160,21 +159,18 @@ void Reseau::construction_graphe_initial() {
                                 Etape* e = new Etape(numero_etape);
                                 _liste_etapes.push_back(e);
                                 numero_etape++;
-                                tache->set_etape_fin(e);
-                                successeur->set_etape_debut(tache->get_etape_fin());
+                                tache->setEtapeFin(e);
+                                successeur->setEtapeDebut(tache->getEtapeFin());
                             }
                             
                         } else {
-                            
-                            if (tache->get_etape_fin() == NULL) {
+                            if (tache->getEtapeFin() == NULL) {
                                 Etape* e = new Etape(numero_etape);
                                 _liste_etapes.push_back(e);
                                 numero_etape++;
-                                tache->set_etape_fin(e);
+                                tache->setEtapeFin(e);
                             }
-                            
-                            successeur->set_etape_debut(tache->get_etape_fin());
-                            
+                            successeur->setEtapeDebut(tache->getEtapeFin());
                         }
                     }
                 } else {
@@ -183,42 +179,43 @@ void Reseau::construction_graphe_initial() {
                     Etape* e = new Etape(numero_etape);
                     _liste_etapes.push_back(e);
                     numero_etape++;
-                    tache->set_etape_fin(e);
+                    tache->setEtapeFin(e);
                 }
             }
         }
     }
 }
 
-void Reseau::ordonnancement_au_plus_tot() {
+/* Fonction calculant les dates au plus tot. **/
+void Reseau::ordonnancementPlusTot() {
     
     // On met toutes les dates au plus tot à -1
     for (auto& etape : _liste_etapes) {
-        etape->set_date_plus_tot(-1);
+        etape->setDatePlusTot(-1);
     }
     
     // La premiere tache a une date au plus tot de 0
-    _liste_taches.front()->set_date_debut_plus_tot(0);
+    _liste_taches.front()->setDateDebutPlusTot(0);
     
     int nbc = 1;
     
     while (nbc < _liste_taches.size()) {
         
         for (auto& tache : _liste_taches) {
-            if (tache->get_date_debut_plus_tot() == -1) {
+            if (tache->getDateDebutPlusTot() == -1) {
                 
                 int plus_grande_val = INT_MIN;
                 
-                for (auto& tache_precedante : tache->get_antecedants()) {
-                    if (tache_precedante->get_date_debut_plus_tot() > -1) {
+                for (auto& tache_precedante : tache->getPredecesseurs()) {
+                    if (tache_precedante->getDateDebutPlusTot() > -1) {
                         
-                        int valeur = (tache_precedante->get_date_debut_plus_tot() + tache_precedante->get_duree());
+                        int valeur = (tache_precedante->getDateDebutPlusTot() + tache_precedante->getDuree());
                         
                         if (valeur > plus_grande_val) {
                             plus_grande_val = valeur;
                         }
                         
-                        tache->set_date_debut_plus_tot(plus_grande_val);
+                        tache->setDateDebutPlusTot(plus_grande_val);
                     }
                     nbc++;
                 }
@@ -226,35 +223,36 @@ void Reseau::ordonnancement_au_plus_tot() {
         }
     }
     
-    _liste_taches.back()->set_date_fin_plus_tot(_liste_taches.back()->get_date_debut_plus_tot() + _liste_taches.back()->get_duree());
+    _liste_taches.back()->setDateFinPlusTot(_liste_taches.back()->getDateDebutPlusTot() + _liste_taches.back()->getDuree());
     
 }
 
-void Reseau::ordonnancement_au_plus_tard() {
+/* Fonction calculant les tâches au plus tard. */
+void Reseau::ordonnancementPlusTard() {
         
     for (auto& tache : _liste_taches) {
-        tache->set_date_debut_plus_tard(INT_MAX);
+        tache->setDateDebutPlusTard(INT_MAX);
     }
     
-    _liste_taches.back()->set_date_fin_plus_tard(_liste_taches.back()->get_date_fin_plus_tot());
-    _liste_taches.back()->set_date_debut_plus_tard(_liste_taches.back()->get_date_fin_plus_tard() - _liste_taches.back()->get_duree());
+    _liste_taches.back()->setDateFinPlusTard(_liste_taches.back()->getDateFinPlusTot());
+    _liste_taches.back()->setDateDebutPlusTard(_liste_taches.back()->getDateFinPlusTard() - _liste_taches.back()->getDuree());
     
     bool place = false;
     
     while (place == false) {
         
         for (auto& tache : _liste_taches) {
-            if(tache->get_date_debut_plus_tard() == INT_MAX) {
+            if(tache->getDateDebutPlusTard() == INT_MAX) {
                 
-                int numero_etape_debut = tache->get_etape_debut()->get_numero();
+                int numero_etape_debut = tache->getEtapeDebut()->getNumero();
                 int date = INT_MAX;
                 
                 for(auto& voisin : _liste_taches) {
-                    if(numero_etape_debut == voisin->get_etape_debut()->get_numero()) {
-                        for (auto& successeur: voisin->get_successeurs()) {
-                            if(successeur->get_date_debut_plus_tard() < INT_MAX) {
-                                if(date > successeur->get_date_debut_plus_tard() - voisin->get_duree()) {
-                                    date = successeur->get_date_debut_plus_tard() - voisin->get_duree();
+                    if(numero_etape_debut == voisin->getEtapeDebut()->getNumero()) {
+                        for (auto& successeur: voisin->getSuccesseurs()) {
+                            if(successeur->getDateDebutPlusTard() < INT_MAX) {
+                                if(date > successeur->getDateDebutPlusTard() - voisin->getDuree()) {
+                                    date = successeur->getDateDebutPlusTard() - voisin->getDuree();
                                 }
                             }
                         }
@@ -262,23 +260,151 @@ void Reseau::ordonnancement_au_plus_tard() {
                 }
                 
                 if(date != INT_MAX) {
-                    tache->set_date_debut_plus_tard(date);
+                    tache->setDateDebutPlusTard(date);
                 }
             }
         }
             
         place = true;
         for(auto& t : _liste_taches) {
-            if (t->get_date_debut_plus_tard() == INT_MAX) {
+            if (t->getDateDebutPlusTard() == INT_MAX) {
                 place = false;
             }
         }
     }
 }
 
-void Reseau::calculs_marges_totales() {
+
+/* Les calculs des dates et taches, chemins et sous graphe critique. */
+void Reseau::executerCalculs() {
     for(auto& tache : _liste_taches) {
-        tache->calcul_marge_totale();
+        tache->calculMargeTotale();
+        tache->calculMargeLibre();
+        tache->calculTacheCritique();
+        
+        if(tache->getCritique() == true) {
+            
+            if(tache->getPredecesseurs().size() == 0) {
+                if(tache->getDateDebutPlusTot() + tache->getDuree() == tache->getDateFinPlusTard()) {
+                    this->_liste_taches_chemin_critique.push_back(tache);
+                }
+            } else {
+                for(auto& antecedant : tache->getPredecesseurs()) {
+                    if(tache->getDateDebutPlusTot() == antecedant->getDateDebutPlusTot() + antecedant->getDuree()) {
+                        this->_liste_taches_chemin_critique.push_back(tache);
+                    }
+                }
+            }
+        }
     }
 }
 
+
+/* Fonctions d'affichage des résultats et des tests */
+void Reseau::afficherResultats() {
+    for(auto& t : _liste_taches) {
+        t->__toString();
+        cout << endl << endl;
+    }
+}
+
+/* Fonction ou on insere les données que l'on attend. **/
+void Reseau::verifierDonnees() {
+    
+    Donnees data;
+    int i = 0;
+    
+    for(auto t : _liste_taches) {
+        switch (i) {
+            case 0:
+                data = {'A', {4,1,3,0,0,0,1,0,0,4,7}};
+                break;
+            case 1:
+                data = {'B', {8,1,0,0,1,0,2,0,0,8,8}};
+                break;
+            case 2:
+                data = {'C', {1,1,13,0,0,0,3,0,0,1,14}};
+                break;
+            case 3:
+                data = {'D', {1,2,13,0,0,3,4,1,14,2,15}};
+                break;
+            case 4:
+                data = {'E', {6,2,3,3,0,1,5,4,7,13,13}};
+                break;
+            case 5:
+                data = {'F', {3,2,6,6,0,1,5,4,7,13,13}};
+                break;
+            case 6:
+                data = {'G', {5,2,0,0,1,2,5,8,8,13,13}};
+                break;
+            case 7:
+                data = {'H', {3,3,0,0,1,5,6,13,13,16,16}};
+                break;
+            case 8:
+                data = {'I', {1,3,13,0,0,4,7,2,15,3,16}};
+                break;
+            case 9:
+                data = {'J', {2,4,13,13,0,7,8,3,16,18,18}};
+                break;
+            case 10:
+                data = {'K', {2,4,0,0,1,6,8,16,16,18,18}};
+                break;
+            case 11:
+                data = {'L', {5,5,0,0,1,8,9,18,18,23,23}};
+                break;
+            default:
+                break;
+        }
+        testerDonneesTaches(t, data);
+        i++;
+    }
+}
+
+/* Fonction qui verifie que les données inserées precedemment correspondent. **/
+void Reseau::testerDonneesTaches(Tache* t, Donnees data) {
+    bool erreur = false;
+    
+    cout << "- Tache : " << t->getNom() << " : ";
+    
+    if(t->getNom() != data.nom) {
+        cout << " nom : attendu : " << data.nom << ", obtenu : " << t->getNom() << "   ";
+    }
+    if(t->getDuree() != data.valeurs[0]) {
+        cout << " duree : attendu : " << data.valeurs[0] << ", obtenu : " << t->getDuree() << "   ";
+    }
+    if(t->getNiveau() != data.valeurs[1]) {
+        cout << " niveau : attendu : " << data.valeurs[1] << ", obtenu : " << t->getNiveau() << "   ";
+    }
+    if(t->getMargeTotale() != data.valeurs[2]) {
+        cout << " MT : attendu : " << data.valeurs[2] << ", obtenu : " << t->getMargeTotale() << "   ";
+    }
+    if(t->getMargeLibre() != data.valeurs[3]) {
+        cout << " ML : attendu : " << data.valeurs[3] << ", obtenu : " << t->getMargeLibre() << "   ";
+    }
+    if(t->getCritique() != data.valeurs[4]) {
+        cout << " critique : attendu : " << data.valeurs[4] << ", obtenu : " << t->getCritique() << "   ";
+    }
+    if(t->getEtapeDebut()->getNumero() != data.valeurs[5]) {
+        cout << " etape debut : attendu : " << data.valeurs[5] << ", obtenu : " << t->getEtapeDebut()->getNumero() << "   ";
+    }
+    if(t->getEtapeFin()->getNumero()  != data.valeurs[6]) {
+        cout << " etape fin : attendu : " << data.valeurs[6] << ", obtenu : " << t->getEtapeFin()->getNumero() << "   ";
+    }
+    if(t->getDateDebutPlusTot() != data.valeurs[7]) {
+        cout << " date debut plus tot : attendu : " << data.valeurs[7] << ", obtenu : " << t->getDateDebutPlusTot() << "   ";
+    }
+    if(t->getDateDebutPlusTard() != data.valeurs[8]) {
+        cout << " date debut plus tard : attendu : " << data.valeurs[8] << ", obtenu : " << t->getDateDebutPlusTard() << "   ";
+    }
+    if(t->getDateFinPlusTot() != data.valeurs[9]) {
+        cout << " date fin plus tot : attendu : " << data.valeurs[9] << ", obtenu : " << t->getDateFinPlusTot() << "   ";
+    }
+    if(t->getDateFinPlusTard() != data.valeurs[10]) {
+        cout << " date fin plus tard : attendu : " << data.valeurs[10] << ", obtenu : " << t->getDateFinPlusTard() << "   ";
+    }
+    
+    if(erreur == false) {
+        cout << " --> Aucune erreur !";
+    }
+    cout << endl;
+}
