@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Bucket
+   uuid = "F7A7903C-4476-4A01-A971-83328B4597B2"
+   type = "1"
+   version = "2.0">
+   <Breakpoints>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53480044-5F2E-4D8E-9C53-F675E81FC9DE"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ade_project/Reseau.cpp"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "21"
+            endingLineNumber = "21"
+            landmarkName = "Reseau::Reseau()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "53480044-5F2E-4D8E-9C53-F675E81FC9DE - 77e0a852d52e70f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Reseau::Reseau()"
+                  moduleName = "ade_project"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/anthony/Desktop/E%CC%81tudes/Analyse%20et%20de%CC%81cision%20des%20entreprises/ade_project/ade_project/Reseau.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "139">
+               </Location>
+               <Location
+                  uuid = "53480044-5F2E-4D8E-9C53-F675E81FC9DE - 77e0a852d52e70f4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Reseau::Reseau()"
+                  moduleName = "ade_project"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/anthony/Desktop/E%CC%81tudes/Analyse%20et%20de%CC%81cision%20des%20entreprises/ade_project/ade_project/Reseau.cpp"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "21"
+                  endingLineNumber = "21"
+                  offsetFromSymbolStart = "21">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+   </Breakpoints>
+</Bucket>

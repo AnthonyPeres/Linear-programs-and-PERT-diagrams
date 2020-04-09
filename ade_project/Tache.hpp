@@ -29,6 +29,7 @@ public:
     void ajouter_antecedant(Tache *antecedant);
     void ajouter_successeur(Tache *successeur);
     void actualiser_successeurs();
+    void calcul_marge_totale();
     
     // Accesseurs
     char get_nom();
