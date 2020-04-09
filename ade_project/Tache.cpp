@@ -12,194 +12,202 @@ using namespace std;
 
 // Constructeurs et destructeurs
 
+/* Constructeur par défaut d'une Tache. **/
 Tache::Tache() {
     
 }
 
-Tache::Tache(char nom, int duree, std::list<Tache *> antecedants) {
+/* Constructeur d'une tâche prennant des parametres.
+ * @param nom : le nom de la tache.
+ * @param duree : la durée de la tache.
+ * @param predecesseurs : la liste des predecesseurs de la tache.
+ **/
+Tache::Tache(char nom, int duree, list<Tache *> predecesseurs) {
     this->_nom = nom;
     this->_duree = duree;
-    this->_antecedants = antecedants;
+    this->_predecesseurs = predecesseurs;
     this->_etape_debut = NULL;
     this->_etape_fin = NULL;
-    this->actualiser_successeurs();
+    this->actualiserSuccesseur();
 }
 
+/* Destructeur d'une tâche. **/
 Tache::~Tache() {
     
 }
 
-// Fonctions
+/* Fonctions */
 
-void Tache::ajouter_antecedant(Tache *antecedant) {
-    this->_antecedants.push_back(antecedant);
-}
-
-void Tache::ajouter_successeur(Tache *successeur) {
+/* Fonction permettant d'ajouter des successeurs.
+ * @param *successeur : un successeur à ajouter.
+ **/
+void Tache::ajouterSuccesseur(Tache *successeur) {
     this->_successeurs.push_back(successeur);
 }
 
-void Tache::actualiser_successeurs() {
-    for (auto& tache : this->get_antecedants()) {
-        tache->ajouter_successeur(this);
+/* Fonction permettant d'actualiser la liste des successeurs. **/
+void Tache::actualiserSuccesseur() {
+    for (auto& tache : this->getPredecesseurs()) {
+        tache->ajouterSuccesseur(this);
     }
 }
 
-void Tache::calcul_marge_totale() {
-    this->_marge_totale = (this->get_date_fin_plus_tard() - this->get_date_debut_plus_tot() - this->get_duree());
+/* Fonction permettant de calculer la marge totale. **/
+void Tache::calculMargeTotale() {
+    this->_marge_totale = (this->getDateFinPlusTard() - this->getDateDebutPlusTot() - this->getDuree());
 }
 
-void Tache::calcul_tache_critique() {
+/* Fonction permettant de dire si la tâche est critique ou non. **/
+void Tache::calculTacheCritique() {
     if(this->_marge_totale == 0) {
-        this->set_critique(true);
+        this->setCritique(true);
     } else {
-        this->set_critique(false);
+        this->setCritique(false);
     }
 }
 
-void Tache::calcul_marge_libre() {
-    this->_marge_libre = this->get_date_fin_plus_tot() - this->get_date_debut_plus_tot() - this->get_duree();
+/* Fonction permettant de calculer la marge libre d'une tâche **/
+void Tache::calculMargeLibre() {
+    this->_marge_libre = this->getDateFinPlusTot() - this->getDateDebutPlusTot() - this->getDuree();
 }
 
-
-void Tache::__tostring() {
-    cout << "Tache " << this->get_nom() << endl;
-    cout << "--> duree : " << this->get_duree() << endl;
-    cout << "--> niveau : " << this->get_niveau() << endl;
-    cout << "--> marge totale : " << this->get_marge_totale() << endl;
-    cout << "--> marge libre : " << this->get_marge_libre() << endl;
-    cout << "--> critique : " << this->get_critique() << endl;
-    cout << "--> etape de debut : " << this->get_etape_debut()->get_numero() << endl;
-    cout << "--> etape de fin : " << this->get_etape_fin()->get_numero() << endl;
-    cout << "--> date debut plus tot : " << this->get_date_debut_plus_tot() << endl;
-    cout << "--> date debut plus tard : " << this->get_date_debut_plus_tard() << endl;
-    cout << "--> date fin plus tot : " << this->get_date_fin_plus_tot() << endl;
-    cout << "--> date fin plus tard : " << this->get_date_fin_plus_tard() << endl;
-    cout << "--> Ses antecedants : ";
-    for(auto& a : this->get_antecedants()) {
-        cout << a->get_nom() << " ";
+/* Fonction permettant d'afficher toutes les informations sur la tâche. **/
+void Tache::__toString() {
+    cout << "Tache " << this->getNom() << "  ---------------" << endl;
+    cout << "|" << endl;
+    cout << "|--> duree : " << this->getDuree() << endl;
+    cout << "|--> marge totale : " << this->getMargeTotale() << endl;
+    cout << "|--> marge libre : " << this->getMargeLibre() << endl;
+    cout << "|--> critique : " << this->getCritique() << endl;
+    cout << "|--> etape de debut : " << this->getEtapeDebut()->getNumero() << endl;
+    cout << "|--> etape de fin : " << this->getEtapeFin()->getNumero() << endl;
+    cout << "|--> date debut plus tot : " << this->getDateDebutPlusTot() << endl;
+    cout << "|--> date debut plus tard : " << this->getDateDebutPlusTard() << endl;
+    cout << "|--> date fin plus tot : " << this->getDateFinPlusTot() << endl;
+    cout << "|--> date fin plus tard : " << this->getDateFinPlusTard() << endl;
+    cout << "|--> Ses predecesseurs : ";
+    for(auto& a : this->getPredecesseurs()) {
+        cout << a->getNom() << " ";
     }
-    cout << endl << "--> Ses successeurs : ";
-    for(auto& s : this->get_successeurs()) {
-        cout << s->get_nom() << "  ";
+    cout << endl << "|--> Ses successeurs : ";
+    for(auto& s : this->getSuccesseurs()) {
+        cout << s->getNom() << "  ";
     }
     
 }
 
-// Accesseurs
+/* Accesseurs */
 
-char Tache::get_nom() {
+char Tache::getNom() {
     return this->_nom;
 }
 
-int Tache::get_duree() {
+int Tache::getDuree() {
     return this->_duree;
 }
 
-int Tache::get_niveau() {
+int Tache::getNiveau() {
     return this->_niveau;
 }
 
-int Tache::get_marge_totale() {
+int Tache::getMargeTotale() {
     return this->_marge_totale;
 }
 
-
-int Tache::get_marge_libre() {
+int Tache::getMargeLibre() {
     return this->_marge_libre;
 }
 
-bool Tache::get_critique() {
+int Tache::getDateDebutPlusTot() {
+    return this->getEtapeDebut()->getDatePlusTot();
+}
+
+int Tache::getDateDebutPlusTard() {
+    return this->getEtapeDebut()->getDatePlusTard();
+}
+
+int Tache::getDateFinPlusTot() {
+    return this->getEtapeFin()->getDatePlusTot();
+}
+
+int Tache::getDateFinPlusTard() {
+    return this->getEtapeFin()->getDatePlusTard();
+}
+
+bool Tache::getCritique() {
     return this->_critique;
 }
 
-std::list<Tache*> Tache::get_antecedants() {
-    return this->_antecedants;
+list<Tache*> Tache::getPredecesseurs() {
+    return this->_predecesseurs;
 }
 
-std::list<Tache*> Tache::get_successeurs() {
+list<Tache*> Tache::getSuccesseurs() {
     return this->_successeurs;
 }
 
-Etape* Tache::get_etape_debut() {
+Etape* Tache::getEtapeDebut() {
     return this->_etape_debut;
 }
 
-Etape* Tache::get_etape_fin() {
+Etape* Tache::getEtapeFin() {
     return this->_etape_fin;
 }
 
-// Mutateurs
+/* Mutateurs */
 
-void Tache::set_nom(char nom) {
+void Tache::setNom(char nom) {
     this->_nom = nom;
 }
 
-void Tache::set_duree(int duree) {
+void Tache::setDuree(int duree) {
     this->_duree = duree;
 }
 
-void Tache::set_niveau(int niveau) {
+void Tache::setNiveau(int niveau) {
     this->_niveau = niveau;
 }
 
-void Tache::set_marge_totale(int marge_totale) {
+void Tache::setMargeTotale(int marge_totale) {
     this->_marge_totale = marge_totale;
 }
 
-void Tache::set_marge_libre(int marge_libre) {
+void Tache::setMargeLibre(int marge_libre) {
     this->_marge_libre = marge_libre;
 }
 
-void Tache::set_critique(bool critique) {
+void Tache::setDateDebutPlusTot(int date) {
+    this->getEtapeDebut()->setDatePlusTot(date);
+}
+
+void Tache::setDateDebutPlusTard(int date) {
+    this->getEtapeDebut()->setDatePlusTard(date);
+}
+
+void Tache::setDateFinPlusTot(int date) {
+    this->getEtapeFin()->setDatePlusTot(date);
+}
+
+void Tache::setDateFinPlusTard(int date) {
+    this->getEtapeFin()->setDatePlusTard(date);
+}
+
+void Tache::setCritique(bool critique) {
     this->_critique = critique;
 }
 
-
-void Tache::set_antecedants(std::list<Tache*> antecedants) {
-    this->_antecedants = antecedants;
+void Tache::setPredecesseurs(list<Tache*> predecesseurs) {
+    this->_predecesseurs = predecesseurs;
 }
 
-void Tache::set_successeurs(std::list<Tache*> successeurs) {
+void Tache::setSuccesseurs(list<Tache*> successeurs) {
     this->_successeurs = successeurs;
 }
 
-void Tache::set_etape_debut(Etape* etape) {
+void Tache::setEtapeDebut(Etape* etape) {
     this->_etape_debut = etape;
 }
 
-void Tache::set_etape_fin(Etape* etape) {
+void Tache::setEtapeFin(Etape* etape) {
     this->_etape_fin = etape;
-}
-
-int Tache::get_date_debut_plus_tot() {
-    return this->get_etape_debut()->get_date_plus_tot();
-}
-
-int Tache::get_date_debut_plus_tard() {
-    return this->get_etape_debut()->get_date_plus_tard();
-}
-
-int Tache::get_date_fin_plus_tot() {
-    return this->get_etape_fin()->get_date_plus_tot();
-}
-
-int Tache::get_date_fin_plus_tard() {
-    return this->get_etape_fin()->get_date_plus_tard();
-}
-
-void Tache::set_date_debut_plus_tot(int date) {
-    this->get_etape_debut()->set_date_plus_tot(date);
-}
-
-void Tache::set_date_debut_plus_tard(int date) {
-    this->get_etape_debut()->set_date_plus_tard(date);
-}
-
-void Tache::set_date_fin_plus_tot(int date) {
-    this->get_etape_fin()->set_date_plus_tot(date);
-}
-
-void Tache::set_date_fin_plus_tard(int date) {
-    this->get_etape_fin()->set_date_plus_tard(date);
 }

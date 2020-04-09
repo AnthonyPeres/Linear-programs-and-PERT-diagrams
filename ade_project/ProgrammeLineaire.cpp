@@ -12,16 +12,16 @@ using namespace std;
 
 // Les constantes
 
-const int MAX_VAR_DECISION = 100;
-const int MIN_VAR_DECISION = 10;
-const int MAX_CONTRAINTES = 10;
+const int MAX_VAR_DECISION = 1000;
+const int MIN_VAR_DECISION = 100;
+const int MAX_CONTRAINTES = 100;
 const int MIN_CONTRAINTES = 5;
 const int MAX_VALEUR_PROFIT = 50;
 const int MIN_VALEUR_PROFIT = 0;
-const int MAX_VALEUR_MATRICE = 100;
+const int MAX_VALEUR_MATRICE = 10;
 const int MIN_VALEUR_MATRICE = 0;
-const int MAX_VALEUR_BASE = 250;
-const int MIN_VALEUR_BASE = 25;
+const int MAX_VALEUR_BASE = 25;
+const int MIN_VALEUR_BASE = 2;
 
 // Constructeur et destructeur
 
@@ -32,31 +32,31 @@ ProgrammeLineaire::ProgrammeLineaire() {
 
 ProgrammeLineaire::~ProgrammeLineaire() {}
 
-// Fonction d'initialisation du PLC
+/* Fonctions */
 
+/* Fonction qui crée les PLC **/
 void ProgrammeLineaire::init() {
     
-    _nb_variables_decisions = random_variables_decisions();
-    _nb_contraintes = random_contraintes();
+    _nb_variables_decisions = randomVariablesDecisions();
+    _nb_contraintes = randomContraintes();
     
     for (int i = 0; i < _nb_variables_decisions; ++i) {
-        _vecteur_profit.push_back(random_profit());
+        _vecteur_profit.push_back(randomProfit());
     }
     
     for (int j(0); j < _nb_contraintes; ++j) {
         vector<int> ligne;
         
         for (int k(0); k < _nb_variables_decisions ; ++k) {
-            ligne.push_back(random_matrice());
+            ligne.push_back(randomMatrice());
         }
         
         _matrice.push_back(ligne);
-        _composantes_base.push_back(random_base());
+        _composantes_base.push_back(randomBase());
     }
 }
 
-// Fonctions de resolution
-
+/* Fonction qui effectue la méthode du simplexe. **/
 void ProgrammeLineaire::simplexe() {
     
     // La gestion du temps
@@ -66,12 +66,12 @@ void ProgrammeLineaire::simplexe() {
     // Avant la résolution, on regarde l'heure
     t1 = clock();
     
-    modifier_matrice();
+    modifierMatrice();
     do {
-        trouver_colonne_pivot();
-        trouver_pivot();
-        resoudre_pivot();
-    } while (solution_optimale());
+        trouverColonnePivot();
+        trouverPivot();
+        resoudrePivot();
+    } while (solutionOptimale());
     
     // On regarde l'heure apres résolution
     t2 = clock();
@@ -83,41 +83,44 @@ void ProgrammeLineaire::simplexe() {
     _temps_resolution = temps;
 }
 
-void ProgrammeLineaire::modifier_matrice() {
+/* Fonction qui modifie la matrice afin de l'adapter pour la méthode du simplexe. **/
+void ProgrammeLineaire::modifierMatrice() {
     
     vector<vector<int>> matrice_simplexe;
-    vector<int> profit = get_profit();
+    vector<int> profit = getProfit();
     
-    for (int c(0); c < get_nb_contraintes(); ++c) {
+    for (int c(0); c < getNombreContraintes(); ++c) {
         
-        vector<int> ligne = get_matrice()[c];
+        vector<int> ligne = getMatrice()[c];
         
-        for (int i(0); i < this->get_nb_contraintes(); ++i) {
+        for (int i(0); i < this->getNombreContraintes(); ++i) {
             if(c == i){ ligne.push_back(1); }
             else { ligne.push_back(0); }
         }
         
-        ligne.push_back(get_composantes_base()[c]);
+        ligne.push_back(getComposanteBase()[c]);
         matrice_simplexe.push_back(ligne);
         profit.push_back(0);
     }
     
     profit.push_back(0);
     matrice_simplexe.push_back(profit);
-    this->set_matrice(matrice_simplexe);
+    this->setMatrice(matrice_simplexe);
 }
 
-bool ProgrammeLineaire::solution_optimale() {
+/* Fonction qui verifie si la soluton est optimale. **/
+bool ProgrammeLineaire::solutionOptimale() {
     
     vector<int> Z = _matrice[_matrice.size() - 1];
-    int val_Z = Z[get_indice_colonne_pivot()];
+    int val_Z = Z[getIndiceColonnePivot()];
     
     if(val_Z <= 0)
         return true;
     return false;
 }
 
-void ProgrammeLineaire::trouver_colonne_pivot() {
+/* Fonction qui trouve la colonne du pivot. **/
+void ProgrammeLineaire::trouverColonnePivot() {
     
     int indice_ligne = 0,
         indice_case = 0,
@@ -138,11 +141,11 @@ void ProgrammeLineaire::trouver_colonne_pivot() {
         indice_case = 0;
     }
     
-    this->set_indice_colonne_pivot(indice_colonne_pivot);
+    this->setIndiceColonnePivot(indice_colonne_pivot);
 }
 
-void ProgrammeLineaire::trouver_pivot() {
-    
+/* Fonction qui trouve le pivot. **/
+void ProgrammeLineaire::trouverPivot() {
     int x = 1,
         b = 1,
         indice_ligne = 0,
@@ -152,7 +155,7 @@ void ProgrammeLineaire::trouver_pivot() {
     
     for(auto& ligne : _matrice) {
         for (auto& c : ligne) {
-            if(indice_colonne == this->get_indice_colonne_pivot())
+            if(indice_colonne == this->getIndiceColonnePivot())
                 x = c;
             
             if(indice_colonne == (int) ligne.size() - 1)
@@ -160,8 +163,8 @@ void ProgrammeLineaire::trouver_pivot() {
             
             if(((double)b / (double)x) < minimum) {
                 minimum = (double)b / (double)x;
-                this->set_valeur_pivot(x);
-                this->set_indice_ligne_pivot(indice_ligne);
+                this->setValeurProfit(x);
+                this->setIndiceLignePivot(indice_ligne);
             }
             indice_colonne++;
         }
@@ -170,28 +173,29 @@ void ProgrammeLineaire::trouver_pivot() {
     }
 }
 
-void ProgrammeLineaire::resoudre_pivot() {
+/* Fonction qui résoud le pivot. **/
+void ProgrammeLineaire::resoudrePivot() {
     
     int indice_ligne = 0, indice_case = 0;
-    vector<int> ligne_pivot = _matrice[get_indice_ligne_pivot()];
+    vector<int> ligne_pivot = _matrice[getIndiceLignePivot()];
     
     for(auto& ligne : _matrice) {
         for(auto& c : ligne) {
-            if(indice_ligne == this->get_indice_ligne_pivot()) {
-                if(indice_case == this->get_indice_colonne_pivot()) {
+            if(indice_ligne == this->getIndiceLignePivot()) {
+                if(indice_case == this->getIndiceColonnePivot()) {
                     c = 1;
                  } else {
-                    c /= this->get_valeur_pivot();
+                    c /= this->getValeurPivot();
                  }
                 
                 
              } else {
-                 if(indice_case == this->get_indice_colonne_pivot()) {
+                 if(indice_case == this->getIndiceColonnePivot()) {
                      c = 0;
                  } else {
-                     int a = ligne[this->get_indice_colonne_pivot()];
+                     int a = ligne[this->getIndiceColonnePivot()];
                      int b = ligne_pivot[indice_case];
-                     int p = this->get_valeur_pivot();
+                     int p = this->getValeurPivot();
                      c = (a * b) / p;
                  }
              }
@@ -202,100 +206,100 @@ void ProgrammeLineaire::resoudre_pivot() {
     }
 }
 
-// Les accesseurs
+/* Les accesseurs */
 
-float ProgrammeLineaire::get_temps_resolution() {
+float ProgrammeLineaire::getTempsResolution() {
     return this->_temps_resolution;
 }
 
-int ProgrammeLineaire::get_nb_variables_decisions() {
+int ProgrammeLineaire::getNombreVarDecisions() {
     return this->_nb_variables_decisions;
 }
 
-int ProgrammeLineaire::get_nb_contraintes() {
+int ProgrammeLineaire::getNombreContraintes() {
     return this->_nb_contraintes;
 }
 
-int ProgrammeLineaire::get_indice_colonne_pivot() {
+int ProgrammeLineaire::getIndiceColonnePivot() {
     return _indice_colonne_pivot;
 }
 
-int ProgrammeLineaire::get_indice_ligne_pivot() {
+int ProgrammeLineaire::getIndiceLignePivot() {
     return _indice_ligne_pivot;
 }
 
-int ProgrammeLineaire::get_valeur_pivot() {
+int ProgrammeLineaire::getValeurPivot() {
     return _valeur_pivot;
 }
 
-std::vector<int> ProgrammeLineaire::get_profit() {
+vector<int> ProgrammeLineaire::getProfit() {
     return this->_vecteur_profit;
 }
 
-std::vector<std::vector<int> > ProgrammeLineaire::get_matrice() {
+vector<vector<int> > ProgrammeLineaire::getMatrice() {
     return this->_matrice;
 }
 
-std::vector<int> ProgrammeLineaire::get_composantes_base() {
+vector<int> ProgrammeLineaire::getComposanteBase() {
     return this->_composantes_base;
 }
 
-// Les mutateurs
+/* Les mutateurs */
 
-void ProgrammeLineaire::set_temps_resolution(float t) {
+void ProgrammeLineaire::setTempsResolution(float t) {
     this->_temps_resolution = t;
 }
 
-void ProgrammeLineaire::set_nb_variable_decisions(int n) {
+void ProgrammeLineaire::setNombreVarDecisions(int n) {
     this->_nb_variables_decisions = n;
 }
 
-void ProgrammeLineaire::set_nb_contraintes(int c) {
+void ProgrammeLineaire::setNombreContraintes(int c) {
     this->_nb_contraintes = c;
 }
 
-void ProgrammeLineaire::set_indice_colonne_pivot(int indice_colonne_pivot) {
+void ProgrammeLineaire::setIndiceColonnePivot(int indice_colonne_pivot) {
     this->_indice_colonne_pivot = indice_colonne_pivot;
 }
 
-void ProgrammeLineaire::set_indice_ligne_pivot(int indice_ligne_pivot) {
+void ProgrammeLineaire::setIndiceLignePivot(int indice_ligne_pivot) {
     this->_indice_ligne_pivot = indice_ligne_pivot;
 }
 
-void ProgrammeLineaire::set_valeur_pivot(int valeur_pivot) {
+void ProgrammeLineaire::setValeurProfit(int valeur_pivot) {
     this->_valeur_pivot = valeur_pivot;
 }
 
-void ProgrammeLineaire::set_profit(std::vector<int> z) {
+void ProgrammeLineaire::setProfit(vector<int> z) {
     this->_vecteur_profit = z;
 }
 
-void ProgrammeLineaire::set_matrice(std::vector<std::vector<int> > a) {
+void ProgrammeLineaire::setMatrice(vector<vector<int> > a) {
     this->_matrice = a;
 }
 
-void ProgrammeLineaire::set_composantes_base(std::vector<int> b) {
+void ProgrammeLineaire::setComposanteBase(vector<int> b) {
     this->_composantes_base = b;
 }
 
-    // Les fonctions d'attribution de valeurs
+/* Les fonctions d'attribution de valeurs */
 
-int ProgrammeLineaire::random_variables_decisions() {
+int ProgrammeLineaire::randomVariablesDecisions() {
     return rand()%(MAX_VAR_DECISION-MIN_VAR_DECISION)+MIN_VAR_DECISION;
 }
 
-int ProgrammeLineaire::random_contraintes() {
+int ProgrammeLineaire::randomContraintes() {
     return rand()%(MAX_CONTRAINTES-MIN_CONTRAINTES)+MIN_CONTRAINTES;
 }
 
-int ProgrammeLineaire::random_profit() {
+int ProgrammeLineaire::randomProfit() {
     return rand()%(MAX_VALEUR_PROFIT-MIN_VALEUR_PROFIT)+MIN_VALEUR_PROFIT;
 }
 
-int ProgrammeLineaire::random_matrice() {
+int ProgrammeLineaire::randomMatrice() {
     return rand()%(MAX_VALEUR_MATRICE-MIN_VALEUR_MATRICE)+MIN_VALEUR_MATRICE;
 }
 
-int ProgrammeLineaire::random_base() {
+int ProgrammeLineaire::randomBase() {
     return rand()%(MAX_VALEUR_BASE-MIN_VALEUR_BASE)+MIN_VALEUR_BASE;
 }

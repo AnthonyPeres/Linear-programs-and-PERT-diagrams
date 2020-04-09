@@ -10,44 +10,49 @@
 
 using namespace std;
 
-// Constructeurs et destructeurs
+/* Constructeurs et destructeurs */
 
+/* Constructeur par defaut d'une Etape. **/
 Etape::Etape() {
 
 }
 
+/* Constructeur d'une étape prennant des parametres.
+ * @param numero : le numero de la tache.
+ **/
 Etape::Etape(int numero) {
     this->_numero = numero;
 }
 
+/* Destructeur d'une etape. **/
 Etape::~Etape() {
 
 }
 
-// Accesseurs
+/* Accesseurs */
 
-int Etape::get_numero() {
+int Etape::getNumero() {
     return this->_numero;
 }
 
-int Etape::get_date_plus_tot() {
+int Etape::getDatePlusTot() {
     return this->_date_plus_tot;
 }
 
-int Etape::get_date_plus_tard() {
+int Etape::getDatePlusTard() {
     return this->_date_plus_tard;
 }
 
 // Mutateurs
 
-void Etape::set_numero(int numero) {
+void Etape::setNumero(int numero) {
     this->_numero = numero;
 }
 
-void Etape::set_date_plus_tot(int date) {
+void Etape::setDatePlusTot(int date) {
     this->_date_plus_tot = date;
 }
 
-void Etape::set_date_plus_tard(int date) {
+void Etape::setDatePlusTard(int date) {
     this->_date_plus_tard = date;
 }
