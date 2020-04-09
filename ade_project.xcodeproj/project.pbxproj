@@ -28,15 +28,16 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		920DD88F243FCF3F00DEA849 /* Structures.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Structures.hpp; sourceTree = "<group>"; };
 		9231263A243DF5F70009FF2B /* ade_project */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = ade_project; sourceTree = BUILT_PRODUCTS_DIR; };
 		92312658243DF7FB0009FF2B /* ProgrammeLineaire.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ProgrammeLineaire.hpp; sourceTree = "<group>"; };
 		92312659243DF7FB0009FF2B /* GestionnaireDonnee.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GestionnaireDonnee.hpp; sourceTree = "<group>"; };
-		9231265A243DF8050009FF2B /* Reseau.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Reseau.hpp; sourceTree = "<group>"; };
+		9231265A243DF8050009FF2B /* Reseau.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Reseau.hpp; sourceTree = "<group>"; tabWidth = 1; usesTabs = 1; };
 		9231265B243DF8050009FF2B /* Tache.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Tache.hpp; sourceTree = "<group>"; };
 		9231265E243DF80F0009FF2B /* GestionnaireDonnee.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GestionnaireDonnee.cpp; sourceTree = "<group>"; };
 		92312662243DF8410009FF2B /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		92312664243DF84B0009FF2B /* ProgrammeLineaire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ProgrammeLineaire.cpp; sourceTree = "<group>"; };
-		92312666243DF8500009FF2B /* Reseau.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reseau.cpp; sourceTree = "<group>"; };
+		92312666243DF8500009FF2B /* Reseau.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Reseau.cpp; sourceTree = "<group>"; tabWidth = 4; wrapsLines = 1; };
 		92312668243DF8550009FF2B /* Tache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tache.cpp; sourceTree = "<group>"; };
 		9231266A243DF85D0009FF2B /* ListeTaches.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = ListeTaches.csv; sourceTree = "<group>"; };
 		9231266B243DF8630009FF2B /* Resultats.csv */ = {isa = PBXFileReference; lastKnownFileType = text; path = Resultats.csv; sourceTree = "<group>"; };
@@ -123,6 +124,7 @@
 		92312654243DF7C80009FF2B /* Header Files */ = {
 			isa = PBXGroup;
 			children = (
+				920DD88F243FCF3F00DEA849 /* Structures.hpp */,
 				9231265A243DF8050009FF2B /* Reseau.hpp */,
 				9231265B243DF8050009FF2B /* Tache.hpp */,
 				9231266F243E270A0009FF2B /* Etape.hpp */,

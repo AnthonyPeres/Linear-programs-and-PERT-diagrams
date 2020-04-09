@@ -16,9 +16,10 @@
 #include <list>
 #include "Tache.hpp"
 #include "Etape.hpp"
+#include "Structures.hpp"
 
 class Reseau {
-
+				
 public:
     
     // Constructeurs et destructeurs
@@ -33,12 +34,18 @@ private:
     void construction_graphe_initial();
     void ordonnancement_au_plus_tot();
     void ordonnancement_au_plus_tard();
-    void calculs_marges_totales();
-        
+    void faire_calculs();
+    void calcul_chemin_critique();
+    void construction_sous_graphe_critique();
+    void afficher_resultats();
+    void verifier_donnees_attendus();
+    void test_pertinance_tache(Tache* t, Donnees data);
+    
     // Les variables
     std::list<Tache*> _liste_taches;
-    std::list<Etape*> _liste_etapes;
-
+    std::list<Etape*> _liste_etapes;			
+    std::list<Tache*> _liste_taches_chemin_critique;
+    std::list<Etape*> _liste_etapes_graphe_critique;
 };
 
 #endif /* Reseau_hpp */

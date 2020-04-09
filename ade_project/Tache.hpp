@@ -24,18 +24,22 @@ public:
     Tache();
     Tache(char nom, int duree, std::list<Tache*> antecedants);
     ~Tache();
-    
+
     // Fonctions
     void ajouter_antecedant(Tache *antecedant);
     void ajouter_successeur(Tache *successeur);
     void actualiser_successeurs();
     void calcul_marge_totale();
+    void calcul_tache_critique();
+    void calcul_marge_libre();
+    void __tostring();
     
     // Accesseurs
     char get_nom();
     int get_duree();
     int get_niveau();
     int get_marge_totale();
+    int get_marge_libre();
     bool get_critique();
     std::list<Tache*> get_antecedants();
     std::list<Tache*> get_successeurs();
@@ -51,6 +55,7 @@ public:
     void set_duree(int duree);
     void set_niveau(int niveau);
     void set_marge_totale(int marge_totale);
+    void set_marge_libre(int marge_libre);
     void set_critique(bool critique);
     void set_antecedants(std::list<Tache*> antecedants);
     void set_successeurs(std::list<Tache*> successeurs);
@@ -68,6 +73,7 @@ private:
     int _duree;
     int _niveau;
     int _marge_totale;
+    int _marge_libre;
     bool _critique;
     std::list<Tache*> _antecedants;
     std::list<Tache*> _successeurs;
