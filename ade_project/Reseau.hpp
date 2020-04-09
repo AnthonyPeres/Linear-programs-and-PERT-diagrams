@@ -33,6 +33,7 @@ private:
     void construction_graphe_initial();
     void ordonnancement_au_plus_tot();
     void ordonnancement_au_plus_tard();
+    void calculs_marges_totales();
         
     // Les variables
     std::list<Tache*> _liste_taches;

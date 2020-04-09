@@ -45,6 +45,11 @@ void Tache::actualiser_successeurs() {
     }
 }
 
+void Tache::calcul_marge_totale() {
+    this->_marge_totale = this->get_date_fin_plus_tard() - this->get_date_debut_plus_tot() - this->get_duree();
+}
+
+
 // Accesseurs
 
 char Tache::get_nom() {
@@ -153,11 +158,4 @@ void Tache::set_date_fin_plus_tot(int date) {
 void Tache::set_date_fin_plus_tard(int date) {
     this->get_etape_fin()->set_date_plus_tard(date);
 }
-
-
-
-
-
-
-
 

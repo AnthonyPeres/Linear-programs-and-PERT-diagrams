@@ -17,6 +17,7 @@ Reseau::Reseau() {
     construction_graphe_initial();
     ordonnancement_au_plus_tot();
     ordonnancement_au_plus_tard();
+    calculs_marges_totales();
 }
 
 Reseau::~Reseau() {
@@ -238,43 +239,46 @@ void Reseau::ordonnancement_au_plus_tard() {
     _liste_taches.back()->set_date_fin_plus_tard(_liste_taches.back()->get_date_fin_plus_tot());
     _liste_taches.back()->set_date_debut_plus_tard(_liste_taches.back()->get_date_fin_plus_tard() - _liste_taches.back()->get_duree());
     
-    bool exit = false;
+    bool place = false;
     
-    while (exit == false) {
+    while (place == false) {
         
         for (auto& tache : _liste_taches) {
             if(tache->get_date_debut_plus_tard() == INT_MAX) {
                 
-                int plus_petite_val = INT_MAX;
+                int numero_etape_debut = tache->get_etape_debut()->get_numero();
+                int date = INT_MAX;
                 
-                for (auto& successeur : tache->get_successeurs()) {
-                    if (successeur->get_date_debut_plus_tard() < INT_MAX) {
-                        
-                        if(plus_petite_val > (successeur->get_date_debut_plus_tard() - tache->get_duree())) {
-                            plus_petite_val = (successeur->get_date_debut_plus_tard() - tache->get_duree());
+                for(auto& voisin : _liste_taches) {
+                    if(numero_etape_debut == voisin->get_etape_debut()->get_numero()) {
+                        for (auto& successeur: voisin->get_successeurs()) {
+                            if(successeur->get_date_debut_plus_tard() < INT_MAX) {
+                                if(date > successeur->get_date_debut_plus_tard() - voisin->get_duree()) {
+                                    date = successeur->get_date_debut_plus_tard() - voisin->get_duree();
+                                }
+                            }
                         }
-                        
                     }
-                    
-                    
                 }
                 
-                tache->set_date_debut_plus_tard(plus_petite_val);
-                
-                
+                if(date != INT_MAX) {
+                    tache->set_date_debut_plus_tard(date);
+                }
             }
-            
-            
         }
-        
-        
-        // On regarde si chaque date a été placé
-        exit = true;
+            
+        place = true;
         for(auto& t : _liste_taches) {
-            if(t->get_date_debut_plus_tard() == INT_MAX) {
-                exit = false;
+            if (t->get_date_debut_plus_tard() == INT_MAX) {
+                place = false;
             }
         }
-        
     }
 }
+
+void Reseau::calculs_marges_totales() {
+    for(auto& tache : _liste_taches) {
+        tache->calcul_marge_totale();
+    }
+}
+
