@@ -68,6 +68,9 @@ void Reseau::init_liste_taches() {
     }
 }
 
+
+/* AU LIEU DE FAIRE PLACEMENT_EFFECTUE FAIRE NBC COMME DANS ORDONNANCEMENT**/
+
 void Reseau::approche_par_suppression() {
     int niveau = 0;
     bool placement_effectue = false;
@@ -205,7 +208,7 @@ void Reseau::ordonnancement_au_plus_tot() {
                 
                 int plus_grande_val = INT_MIN;
                 
-                for (auto tache_precedante : tache->get_antecedants()) {
+                for (auto& tache_precedante : tache->get_antecedants()) {
                     if (tache_precedante->get_date_debut_plus_tot() > -1) {
                         
                         int valeur = (tache_precedante->get_date_debut_plus_tot() + tache_precedante->get_duree());
@@ -228,5 +231,50 @@ void Reseau::ordonnancement_au_plus_tot() {
 
 void Reseau::ordonnancement_au_plus_tard() {
         
+    for (auto& tache : _liste_taches) {
+        tache->set_date_debut_plus_tard(INT_MAX);
+    }
+    
+    _liste_taches.back()->set_date_fin_plus_tard(_liste_taches.back()->get_date_fin_plus_tot());
+    _liste_taches.back()->set_date_debut_plus_tard(_liste_taches.back()->get_date_fin_plus_tard() - _liste_taches.back()->get_duree());
+    
+    bool exit = false;
+    
+    while (exit == false) {
+        
+        for (auto& tache : _liste_taches) {
+            if(tache->get_date_debut_plus_tard() == INT_MAX) {
+                
+                int plus_petite_val = INT_MAX;
+                
+                for (auto& successeur : tache->get_successeurs()) {
+                    if (successeur->get_date_debut_plus_tard() < INT_MAX) {
+                        
+                        if(plus_petite_val > (successeur->get_date_debut_plus_tard() - tache->get_duree())) {
+                            plus_petite_val = (successeur->get_date_debut_plus_tard() - tache->get_duree());
+                        }
+                        
+                    }
+                    
+                    
+                }
+                
+                tache->set_date_debut_plus_tard(plus_petite_val);
+                
+                
+            }
+            
+            
+        }
+        
+        
+        // On regarde si chaque date a été placé
+        exit = true;
+        for(auto& t : _liste_taches) {
+            if(t->get_date_debut_plus_tard() == INT_MAX) {
+                exit = false;
+            }
+        }
+        
+    }
 }
-
