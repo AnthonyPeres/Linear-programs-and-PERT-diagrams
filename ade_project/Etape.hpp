@@ -10,6 +10,7 @@
 #define Etape_hpp
 
 #include <stdio.h>
+#include <iostream>
 
 class Etape {
     
@@ -19,6 +20,9 @@ public:
     Etape();
     Etape(int numero);
     ~Etape();
+    
+    /* Fonctions */
+    void affichageModeGraphique();
     
     /* Accesseurs */
     int getNumero();

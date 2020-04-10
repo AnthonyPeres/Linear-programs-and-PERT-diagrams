@@ -35,10 +35,13 @@ private:
     void ordonnancementPlusTot();
     void ordonnancementPlusTard();
     void executerCalculs();
-    void afficherResultats();
     void verifierDonnees();
     void testerDonneesTaches(Tache* t, Donnees data);
     
+				/* Affichage */
+				void afficherResultats();
+				void afficherGraphe();
+				
     /* Variables */
     std::list<Tache*> _liste_taches;
     std::list<Etape*> _liste_etapes;			

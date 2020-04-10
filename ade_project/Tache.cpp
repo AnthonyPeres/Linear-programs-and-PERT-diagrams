@@ -25,6 +25,7 @@ Tache::Tache() {
 Tache::Tache(char nom, int duree, list<Tache *> predecesseurs) {
     this->_nom = nom;
     this->_duree = duree;
+    this->_critique = false;
     this->_predecesseurs = predecesseurs;
     this->_etape_debut = NULL;
     this->_etape_fin = NULL;
@@ -69,6 +70,16 @@ void Tache::calculTacheCritique() {
 /* Fonction permettant de calculer la marge libre d'une tâche **/
 void Tache::calculMargeLibre() {
     this->_marge_libre = this->getDateFinPlusTot() - this->getDateDebutPlusTot() - this->getDuree();
+}
+
+/* Fonction qui simule l'affichage graphique. **/
+void Tache::afficherModeGraphique() {
+    if(this->getCritique() == false) {
+        cout << this->getNom() << "(" << this->getDuree() << ")";
+        
+    } else {
+        cout << this->getNom() << "(" << this->getDuree() << ") ! Critique !" ;
+    }
 }
 
 /* Fonction permettant d'afficher toutes les informations sur la tâche. **/

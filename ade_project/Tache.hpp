@@ -31,6 +31,7 @@ public:
     void calculMargeTotale();
     void calculTacheCritique();
     void calculMargeLibre();
+    void afficherModeGraphique();
     void __toString();
     
     /* Accesseurs */
