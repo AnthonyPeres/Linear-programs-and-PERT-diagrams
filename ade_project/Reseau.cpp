@@ -16,11 +16,36 @@ Reseau::Reseau() {
     initListeTaches();
     approcheParSuppresion();
     constructionGrapheInitial();
+    
+    cout << "Voici le graphe initial : " << endl;
+    afficherGraphe();
+    cout << "---------------------------------" << endl << endl;
+    
     ordonnancementPlusTot();
+    
+    cout << "Voici le graphe avec calcul des dates au plus tot : " << endl;
+    afficherGraphe();
+    cout << "---------------------------------" << endl << endl;
+
     ordonnancementPlusTard();
+
+    cout << "Voici le graphe avec calcul des dates au plus tard : " << endl;
+    afficherGraphe();
+    cout << "---------------------------------" << endl << endl;
+    
     executerCalculs();
+    
+    cout << "Voici le graphe avec calcul des taches critiques : " << endl;
+    afficherGraphe();
+    cout << "---------------------------------" << endl << endl;
+
+    cout << "Voici la liste de toutes les tâches : " << endl << endl;
     afficherResultats();
+    cout << endl << "---------------------------------" << endl;
+    
+    cout << "Vérification des données : " << endl;
     verifierDonnees();
+    cout << "---------------------------------" << endl;
 }
 
 Reseau::~Reseau() {
@@ -299,15 +324,6 @@ void Reseau::executerCalculs() {
     }
 }
 
-
-/* Fonctions d'affichage des résultats et des tests */
-void Reseau::afficherResultats() {
-    for(auto& t : _liste_taches) {
-        t->__toString();
-        cout << endl << endl;
-    }
-}
-
 /* Fonction ou on insere les données que l'on attend. **/
 void Reseau::verifierDonnees() {
     
@@ -407,4 +423,32 @@ void Reseau::testerDonneesTaches(Tache* t, Donnees data) {
         cout << " --> Aucune erreur !";
     }
     cout << endl;
+}
+
+/* Affichage */
+
+/* Fonctions d'affichage des résultats et des tests */
+void Reseau::afficherResultats() {
+    for(auto& t : _liste_taches) {
+        t->__toString();
+        cout << endl << endl;
+    }
+}
+
+void Reseau::afficherGraphe() {
+    
+    cout << endl;
+    
+    for(auto& tache : _liste_taches) {
+        tache->getEtapeDebut()->affichageModeGraphique();
+
+        cout << "  ------- ";
+        tache->afficherModeGraphique();
+        cout << "------->  ";
+        
+        tache->getEtapeFin()->affichageModeGraphique();
+    
+        cout << endl;
+        
+    }
 }

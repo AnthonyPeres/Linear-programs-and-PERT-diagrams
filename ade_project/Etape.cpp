@@ -21,12 +21,30 @@ Etape::Etape() {
  * @param numero : le numero de la tache.
  **/
 Etape::Etape(int numero) {
+    this->_date_plus_tot = -1;
+    this->_date_plus_tard = -1;
     this->_numero = numero;
 }
 
 /* Destructeur d'une etape. **/
 Etape::~Etape() {
 
+}
+
+/* Fonctions */
+
+/* Fonction qui simule l'affichage graphique. **/
+void Etape::affichageModeGraphique() {
+    if(this->getDatePlusTot() == -1) {
+        cout << this->getNumero();
+    } else {
+        cout << " ";
+        if(this->getDatePlusTard() == -1) {
+            cout << this->getNumero() << " " << this->getDatePlusTot();
+        } else {
+            cout << this->getNumero() << " " << this->getDatePlusTot() << "|" << this->getDatePlusTard();
+        }
+    }
 }
 
 /* Accesseurs */
